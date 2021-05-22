@@ -1,0 +1,17 @@
+:root {
+    --primary: #99154e;
+    --secondary: #ffc93c;
+    --tertiary: #FFDDCC;
+}
+
+html, .card-holder {
+    background-color: var(--tertiary);
+}
+header {
+    background-color: var(--primary);
+    padding: 30px 30px 30px;
+}
+
+.header {
+    color: #ffc93c;
+}
