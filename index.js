@@ -1,11 +1,11 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
-
+const Manager = require('./lib/Manager')
 
 const questions = [
     {
         type: "input",
-        name: "manager",
+        name: "name",
         message: "Enter team manager name:",
         validate: managerInput => {
             if (managerInput) {
@@ -25,7 +25,7 @@ const questions = [
         message: "Enter your email"
     }, {
         type: "input",
-        name: "office number",
+        name: "office",
         messsage: "Enter your office number:"
     } ]
 
@@ -66,5 +66,9 @@ const engineerQuestions = [{
     message: "Enter engineers gihub:"
 } ]
 
-inquirer.prompt(promptArr).then()
+inquirer.prompt(questions)
+.then(data => {
+  const manager = new Manager(data.name, data.id, data.email, data.office);
+  console.log(manager);
+});
     
