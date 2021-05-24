@@ -1,7 +1,10 @@
 const inquirer = require('inquirer');
-const fs = require('fs');
-const Manager = require('./lib/Manager')
 
+const Manager = require('./lib/Manager');
+const Engineer = require('./lib/Engineer');
+const Intern = require('./lib/Intern')
+
+const { writeFile, overFile } = require('./writefile');
 const questions = [
     {
         type: "input",
@@ -27,7 +30,7 @@ const questions = [
         type: "input",
         name: "office",
         messsage: "Enter your office number:"
-    } ]
+    }]
 
 const addQuestion = {
     type: "list",
@@ -48,27 +51,61 @@ const internQuestions = [{
     message: "Enter intern ID:"
 }, {
     type: "input",
-    name: "intern-github",
-    message: "Enter interns gihub:"
-} ]
+    name: "email",
+    message: "Enter your email"
+}, {
+    type: "input",
+    name: "school",
+    message: "Enter interns school:"
+}]
 
 const engineerQuestions = [{
     type: "input",
-    name: "engineer-name",
+    name: "name",
     message: "Enter engineers name:"
 }, {
     type: "input",
-    name: "engineer-id",
+    name: "id",
     message: "Enter engineers ID:"
 }, {
     type: "input",
-    name: "engineer-github",
+    name: "email",
+    message: "Enter your email"
+}, {
+    type: "input",
+    name: "github",
     message: "Enter engineers gihub:"
-} ]
+}]
+
+
 
 inquirer.prompt(questions)
-.then(data => {
-  const manager = new Manager(data.name, data.id, data.email, data.office);
-  console.log(manager);
-});
-    
+    .then(data => {
+        const manager = new Manager(data.name, data.id, data.email, data.office);
+
+        return manager.renderCard(data);
+    }).then(html => { writeFile(html) })
+
+inquirer.prompt(addQuestion).then(addData => {
+    if (addData.choicing === 'End additions') {
+        console.log
+    } else if (addData.choicing === 'Engineer') {
+        inquirer.prompt(engineerQuestions).then(engineerData => {
+            const engineer = new Engineer(engineerData.name, engineerData.id, engineerData.email, engineerData.github);
+
+            return engineer.renderCard()
+        }).then(engineerHTML => {
+            console.log(engineerHTML);
+        })
+    } else if (addData.choicing === 'Intern') {
+        inquirer.prompt(internQuestions).then(internData => {
+            const intern = new Intern(internData.name, internData.id, internData.email, internData.school);
+
+            return intern.renderCard(internData)
+
+        })
+    }
+})
+
+
+
