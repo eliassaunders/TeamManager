@@ -34,12 +34,26 @@ var wipeFunction = function() {
     })
 }
 
-const closeOut = `
+const closingHTML = function() {
+    fs.readFile('./dist/index.html', function(err, finishedPage) {
+        if(err) {
+            console.error;
+        }
+        fs.writeFileSync('./dist/index.html', finishedPage + closeOut(), (err) => {
+            if (err) {
+                console.error;
+            }
+        })
+    })
+}
+
+const closeOut = function() {
+    return `
 </div>
 </body>
 
 </html>
-`;
+`};
 
 const questions = [
     {
@@ -76,37 +90,37 @@ const addQuestion = [{
 const internQuestions = [{
     type: "input",
     name: "name",
-    message: "Enter interns name:"
+    message: "Enter intern's name:"
 }, {
     type: "input",
     name: "id",
-    message: "Enter intern ID:"
+    message: "Enter intern's ID:"
 }, {
     type: "input",
     name: "email",
-    message: "Enter your email"
+    message: "Enter employee's email:"
 }, {
     type: "input",
     name: "school",
-    message: "Enter interns school:"
+    message: "Enter intern's school:"
 }]
 
 const engineerQuestions = [{
     type: "input",
     name: "name",
-    message: "Enter engineers name:"
+    message: "Enter engineer's name:"
 }, {
     type: "input",
     name: "id",
-    message: "Enter engineers ID:"
+    message: "Enter engineer's ID:"
 }, {
     type: "input",
     name: "email",
-    message: "Enter your email"
+    message: "Enter employee's email:"
 }, {
     type: "input",
     name: "github",
-    message: "Enter engineers gihub:"
+    message: "Enter engineer's gihub:"
 }]
 
 wipeFunction();
@@ -115,17 +129,7 @@ inquirer.prompt(questions).then(answers => {
     var returnFunc = function () {
         inquirer.prompt(addQuestion).then(addAnswers => {
             if (addAnswers.choicing === "End additions") {
-                fs.readFile('./dist/index.html', function(err, phaseOfPage) {
-                    if(err) {
-                        console.error;
-                    }
-                    fs.writeFileSync('./dist/index.html', phaseOfPage + closeOut, (err) => {
-                        if (err) {
-                            console.error;
-                        }
-                        console.log("file written successfully");
-                    })
-                })
+                closingHTML();
             }
             if (addAnswers.choicing === "Engineer") {
                 inquirer.prompt(engineerQuestions).then(eAnswers => {
@@ -168,18 +172,7 @@ inquirer.prompt(questions).then(answers => {
     }
 
     if (answers.choice === "End additions") {
-        fs.readFile('./dist/index.html', function(err, phaseOfPage) {
-            if(err) {
-                console.error;
-            }
-            fs.writeFileSync('./dist/index.html', phaseOfPage + closeOut, (err) => {
-                if (err) {
-                    console.error;
-                }
-                console.log("file written successfully");
-                
-            })
-        });   
+        closingHTML();
     }
     if (answers.choice === "Engineer") {
         inquirer.prompt(engineerQuestions).then(eAnswers => {
